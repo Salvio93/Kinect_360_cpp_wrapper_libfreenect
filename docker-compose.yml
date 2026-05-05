@@ -1,0 +1,19 @@
+
+version: '3.8'
+
+services:
+  kinect:
+    build: .
+    container_name: kinect-service
+    privileged: true
+    devices:
+      - /dev/bus/usb:/dev/bus/usb  # USB access for Kinect
+      - /dev/fb0:/dev/fb0           # Framebuffer for display
+    volumes:
+      - ./app:/app                   # Your application code
+      - /dev/shm:/dev/shm           # Shared memory for performance
+    environment:
+      - DISPLAY=:0
+    network_mode: host               # For easy HTTPS access
+    restart: unless-stopped
+    command: tail -f /dev/null       # Keep container running
